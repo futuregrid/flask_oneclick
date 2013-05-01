@@ -51,7 +51,7 @@ if __name__ == '__main__':
     manager = CloudConfigManager()
     manager.start_image(args)
     
-#clouds.create("india-openstack", "heshan", "1", "6d2bca76-8fff-4d57-9f29-50378539b4fa", "m1.tiny", "heshan-key")
+
 
 
 
