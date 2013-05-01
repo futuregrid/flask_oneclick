@@ -1,6 +1,7 @@
+## 
 ## Creates an image in the FutureGrid environement with the given input data
 ##
-##
+
 
 import sys
 sys.path.insert(0, './')
@@ -15,6 +16,7 @@ from cloudmesh.cloudmesh import cloudmesh
 from datetime import datetime
 from cloudmesh.cm_config import cm_config
 from datetime import datetime
+
 
 class CloudConfigManager():
 
@@ -50,9 +52,6 @@ if __name__ == '__main__':
     
     manager = CloudConfigManager()
     manager.start_image(args)
-    
-
-
 
 
     
