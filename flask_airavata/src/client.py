@@ -1,35 +1,39 @@
+import os
 import sh
 from sh import Command
 from sh import ssh
 
-import os
 
-##var = ssh("149.165.158.142", "-i /home/heshan/.ssh/id_dsa ubuntu" , "exec wget https://dist.apache.org/repos/dist/dev/airavata/0.7/RC5/apache-airavata-xbaya-gui-0.7-bin.zip")
+if __name__ == "__main__":
+    privateKey = '/home/heshan/.ssh/id_dsa'
+    user = 'ubuntu'
+    host = '149.165.158.11'
+    machine = user + '@' + host
+    downloadLink = 'http://apache.mirrors.lucidnetworks.net/airavata/0.7/apache-airavata-server-0.7-bin.tar.gz'
+    
+    # Copying the Airavata Server
+    cmd = 'ssh -i' + ' ' + privateKey + ' ' + machine + ' exec wget ' + downloadLink
+    process = os.popen(cmd)
+    preprocessed = process.read()
+    process.close()
 
-# Copying the Airavata Server 
-process = os.popen('ssh -i /home/heshan/.ssh/id_dsa ubuntu@149.165.158.142 exec wget http://apache.mirrors.lucidnetworks.net/airavata/0.7/apache-airavata-server-0.7-bin.tar.gz')
-preprocessed = process.read()
-process.close()
+    # Unzipping the Airavata Server
+    cmd = 'ssh -i' + ' ' + privateKey + ' ' + machine + ' exec tar -xvf apache-airavata-server-*-bin.tar.gz'
+    process = os.popen(cmd)
+    preprocessed = process.read()
+    process.close()
 
-# Unzipping the Airavata Server
-process = os.popen('ssh -i /home/heshan/.ssh/id_dsa ubuntu@149.165.158.142 exec tar -xvf apache-airavata-server-0.7-bin.tar.gz')
-preprocessed = process.read()
-process.close()
+    # Installing Java
+    cmd = 'ssh -i' + ' ' + privateKey + ' ' + machine + ' "export DEBIAN_FRONTEND=noninteractive | exec sudo apt-get install openjdk-7-jre-headless"'
+    process = os.popen(cmd)
+    preprocessed = process.read()
+    process.close()
 
-# Installing Java
-process = os.popen('ssh -i /home/heshan/.ssh/id_dsa ubuntu@149.165.158.142 exec sudo apt-get install openjdk-7-jre-headless')
-preprocessed = process.read()
-process.close()
-
-# Setting JAVA_HOME
-process = os.popen('ssh -i /home/heshan/.ssh/id_dsa ubuntu@149.165.158.142 exec export JAVA_HOME=/usr/bin/java')
-preprocessed = process.read()
-process.close()
-
-# Starting Airavata Server
-process = os.popen('ssh -i /home/heshan/.ssh/id_dsa ubuntu@149.165.158.142 exec sh apache-airavata-server-0.7/bin/airavata-server.sh &')
-preprocessed = process.read()
-process.close()
+    # Starting Airavata Server
+    cmd = 'ssh -i' + ' ' + privateKey + ' ' + machine + ' "export JAVA_HOME=/usr/bin/java | exec nohup sh apache-airavata-server-*/bin/airavata-server.sh &"'
+    process = os.popen(cmd)
+    preprocessed = process.read()
+    process.close()
 
 
 ##if __name__ == "__main__":
