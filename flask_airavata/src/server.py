@@ -11,6 +11,10 @@ def home():
 def about():
   return render_template('about.html')
 
+@app.route('/ack')
+def ack():
+  return render_template('ack.html')
+
 @app.route('/contact')
 def contact():
   return render_template('contact.html')
@@ -22,6 +26,14 @@ def why():
 @app.route('/configuring')
 def configuring():
   return render_template('configuring.html')
+
+@app.route('/configure_base')
+def configure_base():
+  return render_template('configure_base.html')
+
+@app.route('/configure_custom')
+def configure_custom():
+  return render_template('configure_custom.html')
 
 @app.route('/monitoring')
 def monitoring():
