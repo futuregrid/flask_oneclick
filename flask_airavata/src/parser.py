@@ -15,10 +15,6 @@ from sh import tar
 from sh import cp
 from sh import kill
 
-#TODO
-##  Add the _tty_in=True to each of the commands being used. eg:
-##  r = cm("--set", "quiet", "kill", _tty_in=True)
-
 dict = {}
 logfilename = "log.txt"
 
@@ -111,7 +107,6 @@ class ConfigManager():
         try: 
             log("Starting the Airavata server ...")
             #os.system("nohup ./apache-tomcat-6.0.14/bin/catalina.sh run &")
-            # TODO : talk to Gregor
             os.system("nohup ./" + dict['TOMCAT_VERSION']+ "/bin/catalina.sh run &")
         except:
             log("Error starting the Airavata server ...")
@@ -120,7 +115,6 @@ class ConfigManager():
     def stop_server(self, args):
         log("Stopping the Airavata server ...")
         #shutdownCmd = "nohup ./apache-tomcat-6.0.14/bin/catalina.sh run &"
-        # TODO : talk to Gregor
         shutdownCmd = "nohup ./" + dict['TOMCAT_VERSION']+ "/bin/catalina.sh run &"
         subprocess.call([shutdownCmd], shell=true)
 

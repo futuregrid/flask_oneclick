@@ -5,18 +5,6 @@ import subprocess
 import ConfigParser
 import fabric
 
-# TODO: Implement the following 
-# 1. Create a decorator in python that logs activites to log files when you invoke a perticular function.
-# 2. Use sh instead of os
-# 3. Have another function to log and run the command
-
-
-# TODO: 
-##fromahimport apt-get sh as _apt-get 
-##fromsh import sudo
-##apt-get-install =bake(apt-get,"install"
-##apt-get(
-
 from fabric.api import *
 
 dict = {}
