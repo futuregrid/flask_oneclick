@@ -45,9 +45,19 @@ def configure_base():
   return render_template('configure_base.html')
 
 
+@app.route('/configure_base_result')
+def configure_base_result():
+  return render_template('configure_base_result.html')
+
+
 @app.route('/configure_custom')
 def configure_custom():
   return render_template('configure_custom.html')
+
+
+@app.route('/configure_custom_result')
+def configure_custom_result():
+  return render_template('configure_custom_result.html')
 
 
 @app.route('/monitoring')
