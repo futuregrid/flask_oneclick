@@ -47,6 +47,13 @@ def configure_base():
 
 @app.route('/configure_base_result')
 def configure_base_result():
+  ip = request.args.get('ip_address', '')
+  java = request.args.get('dropdown_java', '')
+  tomcat = request.args.get('dropdown_tomcat', '')
+  airavata = request.args.get('dropdown_airavata', '')
+
+  print ip, java, tomcat, airavata
+  
   return render_template('configure_base_result.html')
 
 
@@ -57,6 +64,13 @@ def configure_custom():
 
 @app.route('/configure_custom_result')
 def configure_custom_result():
+  ip = request.args.get('ip_address', '')
+  java = request.args.get('dropdown_java', '')
+  tomcat = request.args.get('dropdown_tomcat', '')
+  airavata = request.args.get('dropdown_airavata', '')
+
+  print ip, java, tomcat, airavata
+    
   return render_template('configure_custom_result.html')
 
 
@@ -76,31 +90,28 @@ def imageResult():
   architecture = request.args.get('dropdown_architecture', '')
   memory = request.args.get('dropdown_memory', '')
   os = request.args.get('dropdown_os', '')
-  java = request.args.get('dropdown_java', '')
-  tomcat = request.args.get('dropdown_tomcat', '')
-  airavata = request.args.get('dropdown_airavata', '')
 
-  if(java == "17"):
-    dict['JAVA_VERSION']= java
-  else:
-    # For now setting like this. Later change it. 
-    dict['JAVA_VERSION']= java
-
-  if(airavata == "Airavata0.6"):
-    dict['AIRAVATA_VERSION']= airavata
-    dict['AIRAVATA_DOWNLOAD_URL']= "https://dist.apache.org/repos/dist/dev/airavata/0.6/RC3/apache-airavata-server-0.6-SNAPSHOT-war.zip"
-  else:
-    # For now setting like this. Later change it. 
-    dict['AIRAVATA_VERSION']= airavata
-    dict['AIRAVATA_DOWNLOAD_URL']= "https://dist.apache.org/repos/dist/dev/airavata/0.6/RC3/apache-airavata-server-0.6-SNAPSHOT-war.zip"
-
-  if(tomcat == "tomcat6"):
-    dict['TOMCAT_VERSION']= "apache-tomcat-6.0.14.tar.gz"
-    dict['TOMCAT_DOWNLOAD_URL']= "http://apache.hoxt.com/tomcat/tomcat-6/v6.0.14/bin/apache-tomcat-6.0.14.tar.gz"
-  else:
-    # For now setting like this. Later change it. 
-    dict['TOMCAT_VERSION']= "apache-tomcat-6.0.14.tar.gz"
-    dict['TOMCAT_DOWNLOAD_URL']= "http://apache.hoxt.com/tomcat/tomcat-6/v6.0.14/bin/apache-tomcat-6.0.14.tar.gz"
+##  if(java == "17"):
+##    dict['JAVA_VERSION']= java
+##  else:
+##    # For now setting like this. Later change it. 
+##    dict['JAVA_VERSION']= java
+##
+##  if(airavata == "Airavata0.6"):
+##    dict['AIRAVATA_VERSION']= airavata
+##    dict['AIRAVATA_DOWNLOAD_URL']= "https://dist.apache.org/repos/dist/dev/airavata/0.6/RC3/apache-airavata-server-0.6-SNAPSHOT-war.zip"
+##  else:
+##    # For now setting like this. Later change it. 
+##    dict['AIRAVATA_VERSION']= airavata
+##    dict['AIRAVATA_DOWNLOAD_URL']= "https://dist.apache.org/repos/dist/dev/airavata/0.6/RC3/apache-airavata-server-0.6-SNAPSHOT-war.zip"
+##
+##  if(tomcat == "tomcat6"):
+##    dict['TOMCAT_VERSION']= "apache-tomcat-6.0.14.tar.gz"
+##    dict['TOMCAT_DOWNLOAD_URL']= "http://apache.hoxt.com/tomcat/tomcat-6/v6.0.14/bin/apache-tomcat-6.0.14.tar.gz"
+##  else:
+##    # For now setting like this. Later change it. 
+##    dict['TOMCAT_VERSION']= "apache-tomcat-6.0.14.tar.gz"
+##    dict['TOMCAT_DOWNLOAD_URL']= "http://apache.hoxt.com/tomcat/tomcat-6/v6.0.14/bin/apache-tomcat-6.0.14.tar.gz"
 
   ## TODO : Add the following values before running the script. 
   dict['USER_NAME']= ""
