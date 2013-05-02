@@ -5,6 +5,7 @@
 
 from flask import Flask, render_template, request
 from image import *
+from client import *
 app = Flask(__name__)
 
 
@@ -46,7 +47,7 @@ def configure_base():
   return render_template('configure_base.html')
 
 
-@app.route('/configure_base_result')
+@app.route('/configure_base_result', methods=['GET', 'POST'])
 def configure_base_result():
   ip = request.args.get('ip_address', '')
   java = request.args.get('dropdown_java', '')
@@ -54,6 +55,17 @@ def configure_base_result():
   airavata = request.args.get('dropdown_airavata', '')
 
   print ip, java, tomcat, airavata
+
+  # TODO : Change accordingly
+  # TODO : Should test this
+  args = {}
+  args['privateKey'] = '/home/heshan/.ssh/id_dsa'
+  args['user'] = 'ubuntu'
+  args['host'] = '149.165.158.11'
+  args['airavataDownloadLink'] = 'http://apache.mirrors.lucidnetworks.net/airavata/0.7/apache-airavata-server-0.7-bin.tar.gz'
+
+  manager = ImageConfigManager()
+  manager.configure_image(args)
   
   return render_template('configure_base_result.html')
 
@@ -63,7 +75,7 @@ def configure_custom():
   return render_template('configure_custom.html')
 
 
-@app.route('/configure_custom_result')
+@app.route('/configure_custom_result', methods=['GET', 'POST'])
 def configure_custom_result():
   ip = request.args.get('ip_address', '')
   java = request.args.get('dropdown_java', '')
@@ -71,7 +83,18 @@ def configure_custom_result():
   airavata = request.args.get('dropdown_airavata', '')
 
   print ip, java, tomcat, airavata
-    
+
+  # TODO : Change accordingly
+  # TODO : Should test this
+  args = {}
+  args['privateKey'] = '/home/heshan/.ssh/id_dsa'
+  args['user'] = 'ubuntu'
+  args['host'] = '149.165.158.11'
+  args['airavataDownloadLink'] = 'http://apache.mirrors.lucidnetworks.net/airavata/0.7/apache-airavata-server-0.7-bin.tar.gz'
+
+  manager = ImageConfigManager()
+  manager.configure_image(args)
+      
   return render_template('configure_custom_result.html')
 
 
@@ -115,8 +138,6 @@ def imageResult():
   manager = CloudConfigManager()
   manager.start_image(args)
 
-  # TODO : Add logic to create image
-  
   return render_template('image-result.html')
 
 
