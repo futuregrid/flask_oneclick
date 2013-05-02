@@ -43,4 +43,6 @@ Limitations/issues
 
 5) Instance monitoring related information is not displayed in this revision.
 
-4) 
+6) Fix the todos in server.py (Will fix over the weekend)
+
+7) Add a UI to start/stop a server. Backend code is already there Will fix over the weekend)
