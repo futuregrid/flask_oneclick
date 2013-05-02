@@ -4,6 +4,7 @@
 
 
 from flask import Flask, render_template, request
+from image import *
 app = Flask(__name__)
 
 
@@ -86,42 +87,33 @@ def create():
 
 @app.route('/image-result', methods=['GET', 'POST'])
 def imageResult():  
-  infrastructure = request.args.get('dropdown_infrastructure', '')
-  architecture = request.args.get('dropdown_architecture', '')
+  infra = request.args.get('dropdown_infrastructure', '')
+  archi = request.args.get('dropdown_architecture', '')
   memory = request.args.get('dropdown_memory', '')
   os = request.args.get('dropdown_os', '')
 
-##  if(java == "17"):
-##    dict['JAVA_VERSION']= java
-##  else:
-##    # For now setting like this. Later change it. 
-##    dict['JAVA_VERSION']= java
-##
-##  if(airavata == "Airavata0.6"):
-##    dict['AIRAVATA_VERSION']= airavata
-##    dict['AIRAVATA_DOWNLOAD_URL']= "https://dist.apache.org/repos/dist/dev/airavata/0.6/RC3/apache-airavata-server-0.6-SNAPSHOT-war.zip"
-##  else:
-##    # For now setting like this. Later change it. 
-##    dict['AIRAVATA_VERSION']= airavata
-##    dict['AIRAVATA_DOWNLOAD_URL']= "https://dist.apache.org/repos/dist/dev/airavata/0.6/RC3/apache-airavata-server-0.6-SNAPSHOT-war.zip"
-##
-##  if(tomcat == "tomcat6"):
-##    dict['TOMCAT_VERSION']= "apache-tomcat-6.0.14.tar.gz"
-##    dict['TOMCAT_DOWNLOAD_URL']= "http://apache.hoxt.com/tomcat/tomcat-6/v6.0.14/bin/apache-tomcat-6.0.14.tar.gz"
-##  else:
-##    # For now setting like this. Later change it. 
-##    dict['TOMCAT_VERSION']= "apache-tomcat-6.0.14.tar.gz"
-##    dict['TOMCAT_DOWNLOAD_URL']= "http://apache.hoxt.com/tomcat/tomcat-6/v6.0.14/bin/apache-tomcat-6.0.14.tar.gz"
+  print infra, archi, memory, os
 
-  ## TODO : Add the following values before running the script. 
-  dict['USER_NAME']= ""
-  dict['HOST_NAME']= ""
-  dict['KEY_FILE_NAME']= ""
-  dict['LOCAL_SCRIPT']= "" 
-  dict['LOCAL_CONFIG_FILE']= "" 
-  dict['DESTINATION_PATH']= "" 
-  dict['REMOTE_SCRIPT']= "" 
+  args = {}
+  if(infra == "openstack"):
+    args['cloud'] = "india-openstack"
+  else:
+    args['cloud'] = "grizzly-openstack"
 
+  ## TODO : Read in from the config file  
+  args['username'] = "heshan"
+  args['publicKey'] = "heshan-key" 
+  args['userId'] = "1"
+
+  if(os == "ubuntu"):
+    args['instanceId'] = "6d2bca76-8fff-4d57-9f29-50378539b4fa"
+    args['imageSize'] = "m1.tiny"
+  else:
+    args['instanceId'] = "6d2bca76-8fff-4d57-9f29-50378539b4fa"
+    args['imageSize'] = "m1.tiny"  
+  
+  manager = CloudConfigManager()
+  manager.start_image(args)
 
   # TODO : Add logic to create image
   
