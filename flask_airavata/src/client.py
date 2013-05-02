@@ -68,7 +68,9 @@ class ImageConfigManager():
         downloadLink = args['airavataDownloadLink']
 
         # Stopping Airavata Server
-        cmd = 'ssh -i' + ' ' + privateKey + ' ' + machine + ' "exec kill $(ps aux | grep 'airavata' | awk '{print $2}')"'
+	# TODO : Test this and fix it.
+        #cmd = 'ssh -i' + ' ' + privateKey + ' ' + machine + ' "exec kill $(ps aux | grep 'airavata' | awk '{print $2}')"'
+        cmd = 'ssh -i' + ' ' + privateKey + ' ' + machine + ' "exec kill $(ps aux | grep \'airavata\' | awk \'{print $2}\')"'
         process = os.popen(cmd)
         preprocessed = process.read()
         process.close()
