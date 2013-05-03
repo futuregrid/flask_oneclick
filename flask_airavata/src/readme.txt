@@ -40,20 +40,36 @@ the public ip. Once it is set, I would update the backend database accordingly. 
 be easier for me to get the information. I have asked developers but I did not get a resolution 
 yet. So, I had to hard code the IPs.
 
+  GVL: this seems a trivial change in the code and could be done easily, why not implement????
+       Coordinate with the others
+
 2) CloudMesh does not have any convenience API methods to get a perticular instances started 
 by a user directly. IMO these should be there so a user could directly use them without any 
 issues rather than trying to parse a large datastruture. 
 
+   GVL: Why not implement? By the way there is in the table a feature to list "my" instances, 
+        I am sure that can be wrapped
+
 3) Had issues in installing java within a python script with the interactive shell. Tried 
 disabling it but could not resolve the interactivity. Spoke to Koji but we couldn't figure 
 out what to do with it. For, now this is a bug with the software. 
+
+   GVL: ??? can you produce a description on how to create this issue in detail so i can replicate?
+        why does java have to be installed? where does it need to beinstalled?
 
 4) Once an image is created, it takes some time to assign an public IP to it. Therefore, 
 I am doing the image configuration in two steps
 	Step 1: Create the VM image
 	Step 2: Once the public IP is assigned to the VM, Airavata is installed on it. 
 
+   GVL: you should use Grizzly on FG and introduce a wait statement while waiting for the VM that you create.
+        logging into the vm and saying uname -a will be a good test
+        easy to add
+
+
 5) Instance monitoring related information is not displayed in this revision.
+
+   GVL: not sure what this means
 
 6) Fix the todos in server.py (Will fix over the weekend)
 
