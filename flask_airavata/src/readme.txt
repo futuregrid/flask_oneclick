@@ -4,6 +4,8 @@ Installation instructions
 1) Checkout and install ClouMesh in a Virtual environment.
    Instruction can be found on http://cloudmesh.blogspot.com/2013/02/setting-up-cloud-mesh-environment-on.html
 
+   GVL: PLEASE REMOVE DEPENDENCY TO GO TO SOME BLOG, INSTAED PUT EXPLENATION IN SELF CONTAINED MANNER HERE
+
 2) Start the server using the following command.
    eg: make server
 
