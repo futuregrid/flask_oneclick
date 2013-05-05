@@ -73,7 +73,7 @@ out what to do with it. For, now this is a bug with the software.
 	   could be resolved if we had Java installed base iamges, so that we could only have to set
            the environment variable within our program (ie. export JAVA_HOME=/usr/bin/java). 
 	  
-	   iii) It could be installed anywhere. Only this that we have to do is to set the 
+	   iii) It could be installed anywhere. Only thing we have to do is to set the 
 	   JAVA_HOME environment variable properly.
 	   
 
