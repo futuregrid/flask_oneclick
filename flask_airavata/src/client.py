@@ -84,10 +84,10 @@ class ImageConfigManager():
         process.close()
 
         # Installing Java
-##        cmd = 'ssh -i' + ' ' + privateKey + ' ' + machine + ' "export DEBIAN_FRONTEND=noninteractive | exec sudo apt-get install openjdk-7-jre-headless"'
-##        process = os.popen(cmd)
-##        preprocessed = process.read()
-##        process.close()
+        cmd = 'ssh -i' + ' ' + privateKey + ' ' + machine + ' "export DEBIAN_FRONTEND=noninteractive | exec sudo apt-get install openjdk-7-jre-headless"'
+        process = os.popen(cmd)
+        preprocessed = process.read()
+        process.close()
 
         # Starting Tomcat Server
         cmd = 'ssh -i' + ' ' + privateKey + ' ' + machine + ' "export JAVA_HOME=/usr/bin/java | exec nohup sh apache-tomcat-*/bin/catalina.sh run &"'
@@ -138,12 +138,12 @@ if __name__ == "__main__":
     manager = ImageConfigManager()
 
     # Uncomment following line to deploy Airavata in vanilla mode
-    #args['airavataDownloadLink'] = 'http://apache.mirrors.lucidnetworks.net/airavata/0.7/apache-airavata-server-0.7-bin.tar.gz'
-    #manager.configure_image(args)
+    args['airavataDownloadLink'] = 'http://apache.mirrors.lucidnetworks.net/airavata/0.7/apache-airavata-server-0.7-bin.tar.gz'
+    manager.configure_image(args)
 
     # Uncomment following line to deploy Airavata on Tomcat
-    args['airavataDownloadLink'] = 'http://apache.mirrors.lucidnetworks.net/airavata/0.7/apache-airavata-server-0.7-war.tar.gz'
-    manager.configure_tomcat_image(args)
+    #args['airavataDownloadLink'] = 'http://apache.mirrors.lucidnetworks.net/airavata/0.7/apache-airavata-server-0.7-war.tar.gz'
+    #manager.configure_tomcat_image(args)
 
 
 ##if __name__ == "__main__":
