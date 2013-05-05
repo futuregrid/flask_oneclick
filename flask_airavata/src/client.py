@@ -44,6 +44,58 @@ class ImageConfigManager():
         process.close()
 
 
+    def configure_tomcat_image(self, args):
+        
+	privateKey = args['privateKey']
+        user = args['user']
+        host = args['host']
+        machine = user + '@' + host
+        airavataDownloadLink = args['airavataDownloadLink']
+        tomcatDownloadLink = args['tomcatDownloadLink']
+ 
+        # Downloading the Airavata Webapp
+        cmd = 'ssh -i' + ' ' + privateKey + ' ' + machine + ' exec wget ' + airavataDownloadLink
+        process = os.popen(cmd)
+        preprocessed = process.read()
+        process.close()
+
+        # Unzipping the Airavata Webapp
+        cmd = 'ssh -i' + ' ' + privateKey + ' ' + machine + ' exec tar -xvf apache-airavata-server-*-war.tar.gz'
+        process = os.popen(cmd)
+        preprocessed = process.read()
+        process.close()
+
+        # Downloading the Tomcat Server
+        cmd = 'ssh -i' + ' ' + privateKey + ' ' + machine + ' exec wget ' + tomcatDownloadLink
+        process = os.popen(cmd)
+        preprocessed = process.read()
+        process.close() 
+
+        # Unzipping the Tomcat Server
+        cmd = 'ssh -i' + ' ' + privateKey + ' ' + machine + ' exec tar -xvf apache-tomcat-*.tar.gz'
+        process = os.popen(cmd)
+        preprocessed = process.read()
+        process.close()
+        
+        # Copying the webapps to Tomcat
+        cmd = 'ssh -i' + ' ' + privateKey + ' ' + machine + ' exec cp airavata-*.war apache-tomcat-*/webapps/ -v'
+        process = os.popen(cmd)
+        preprocessed = process.read()
+        process.close()
+
+        # Installing Java
+##        cmd = 'ssh -i' + ' ' + privateKey + ' ' + machine + ' "export DEBIAN_FRONTEND=noninteractive | exec sudo apt-get install openjdk-7-jre-headless"'
+##        process = os.popen(cmd)
+##        preprocessed = process.read()
+##        process.close()
+
+        # Starting Tomcat Server
+        cmd = 'ssh -i' + ' ' + privateKey + ' ' + machine + ' "export JAVA_HOME=/usr/bin/java | exec nohup sh apache-tomcat-*/bin/catalina.sh run &"'
+        process = os.popen(cmd)
+        preprocessed = process.read()
+        process.close()
+        
+
     def start_airavata(self, args):   
 
         privateKey = args['privateKey']
@@ -76,17 +128,22 @@ class ImageConfigManager():
         process.close()
 
 
-
 if __name__ == "__main__":
     args = {}
     args['privateKey'] = '/home/heshan/.ssh/id_dsa'
     args['user'] = 'ubuntu'
-    args['host'] = '149.165.158.11'
-    args['airavataDownloadLink'] = 'http://apache.mirrors.lucidnetworks.net/airavata/0.7/apache-airavata-server-0.7-bin.tar.gz'
+    args['host'] = '149.165.158.11'    
+    args['tomcatDownloadLink'] = 'http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.14/bin/apache-tomcat-6.0.14.tar.gz'
 
     manager = ImageConfigManager()
-    manager.configure_image(args)
 
+    # Uncomment following line to deploy Airavata in vanilla mode
+    #args['airavataDownloadLink'] = 'http://apache.mirrors.lucidnetworks.net/airavata/0.7/apache-airavata-server-0.7-bin.tar.gz'
+    #manager.configure_image(args)
+
+    # Uncomment following line to deploy Airavata on Tomcat
+    args['airavataDownloadLink'] = 'http://apache.mirrors.lucidnetworks.net/airavata/0.7/apache-airavata-server-0.7-war.tar.gz'
+    manager.configure_tomcat_image(args)
 
 
 ##if __name__ == "__main__":
