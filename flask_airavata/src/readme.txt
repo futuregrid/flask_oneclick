@@ -36,14 +36,28 @@ Limitations/issues
 1) At the CloudMesh environment level, when a new image is created, it's id is not returned. 
 Therefore, found it difficult to use it within the app. If I had that information, I could 
 have kept the id in a table. Then I could periodically the do cloud.refresh() and check for 
-the public ip. Once it is set, I would update the backend database accordingly. Then it will 
-be easier for me to get the information. I have asked developers but I did not get a resolution 
-yet. So, I had to hard code the IPs.
+the public ip. Once it is set, I would install the software on that image. I'm working with 
+Pushkar on this. 
 
   GVL: this seems a trivial change in the code and could be done easily, why not implement????
        Coordinate with the others
   
-  Heshan: I asked them about this last week and they said that they'll fix it and get back to me.
+  Heshan: Pushkar has done some modifications to resolve this but the returned result is not in a proper
+          format. I have sent him the following email and waiting till he fixes it. 
+
+          "
+	  Hi Pushkar,
+
+          Can you change the returned data sturcture to the following format
+
+          { id : 'id-of-the-image', value : 'info of the image' }
+
+          Otherwise if you return { id : value}, I can not programmetically extract out the information from the data structure. 
+
+	  Actually I only need the id of the image (eg. f1c8e310-282c-4572-a605-129e32bc76ae). Then I could find 
+          out the other info from the dict{} in the cloudmesh().
+
+	  "
 
 2) CloudMesh does not have any convenience API methods to get information on perticular instances started 
 by a user directly. IMO these should be there so a user could directly use them without any 
@@ -77,17 +91,12 @@ out what to do with it. For, now this is a bug with the software.
 	   JAVA_HOME environment variable properly.
 	   
 
-4) Once an image is created, it takes some time to assign an public IP to it. Therefore, 
-I am doing the image configuration in two steps
-	Step 1: Create the VM image
-	Step 2: Once the public IP is assigned to the VM, Airavata is installed on it. 
+4) Once an image is created, it takes some time to assign an public IP to it.
 
    GVL: you should use Grizzly on FG and introduce a wait statement while waiting for the VM that you create.
         logging into the vm and saying uname -a will be a good test
         easy to add
 
-   Heshan : I will look into this.
+   Heshan : I have fixed this using Python threads and by monitoring the datastructure for the public ip. 
+	    Once public ip is assigned, software is installed in that particular machine.
 
-6) Fix the todos in server.py (Will fix over the weekend)
-
-7) Add a UI to start/stop a server. Backend code is already there Will fix over the weekend)
