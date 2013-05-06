@@ -103,20 +103,39 @@ def configure_base_result():
   tomcat = request.args.get('dropdown_tomcat', '')
   airavata = request.args.get('dropdown_airavata', '')
 
-  args = {}
-  args['privateKey'] = getConfigSectionMap("ImageConfig")['keyfilepath']  
-  args['user'] = 'ubuntu'
-  args['host'] = ip
-  args['airavataDownloadLink'] = 'http://apache.mirrors.lucidnetworks.net/airavata/0.7/apache-airavata-server-0.7-bin.tar.gz'
-
-  print "SOFTWARE_CONFIG : ", ip, java, tomcat, airavata, args['privateKey'], args['airavataDownloadLink']
-  
-  manager = ImageConfigManager()
-  manager.configure_image(args)
-  
+  try:
+    thread.start_new_thread(base_thread, ("BaseThread-" + str(count), 2, ))
+  except:
+    print "Error: unable to start Base Thread"
+       
   return render_template('configure_base_result.html')
 
+def base_thread(threadName, delay):
+  condition = True
+  clouds = cloudmesh()
+  while condition:
+    clouds.refresh()
+    time.sleep(delay)
+    if (clouds.clouds['india-openstack']['servers']['4b9b4a5d-38aa-46dc-86d2-164771bb61e6']['addresses'][u'vlan102'].__len__() == 2):
+      ip = val['addresses'][u'vlan102'][1][u'addr']
+      print "public ip address : ", ip
+      
+      args = {}
+      args['privateKey'] = getConfigSectionMap("ImageConfig")['keyfilepath']  
+      args['user'] = 'ubuntu'
+      args['host'] = ip
+      args['airavataDownloadLink'] = 'http://apache.mirrors.lucidnetworks.net/airavata/0.7/apache-airavata-server-0.7-bin.tar.gz'
 
+      print "SOFTWARE_CONFIG : ", ip, java, tomcat, airavata, args['privateKey'], args['airavataDownloadLink']
+
+      manager = ImageConfigManager()
+      manager.configure_image(args)
+
+      condition = False
+
+    print "%s: %s" % (threadName, time.ctime(time.time()))
+  
+  
 @app.route('/configure_custom')
 def configure_custom():
   return render_template('configure_custom.html')
@@ -163,20 +182,42 @@ def configure_custom_result():
 
   print ip, java, tomcat, airavata
 
-  args = {}
-  args['privateKey'] = getConfigSectionMap("ImageConfig")['keyfilepath']  
-  args['user'] = 'ubuntu'
-  args['host'] = ip
-  args['tomcatDownloadLink'] = 'http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.14/bin/apache-tomcat-6.0.14.tar.gz'
-  args['airavataDownloadLink'] = 'http://apache.mirrors.lucidnetworks.net/airavata/0.7/apache-airavata-server-0.7-war.tar.gz'
+  try:
+    thread.start_new_thread(custom_thread, ("CustomThread-" + str(count), 2, ))
+  except:
+    print "Error: unable to start Base Thread"
 
-  print "SOFTWARE_CONFIG : ", ip, java, tomcat, airavata, args['privateKey'], args['tomcatDownloadLink'], args['airavataDownloadLink']
-  
-  manager = ImageConfigManager()
-  manager.configure_image(args)
       
   return render_template('configure_custom_result.html')
 
+
+def custom_thread(threadName, delay):
+  condition = True
+  clouds = cloudmesh()
+  while condition:
+    clouds.refresh()
+    time.sleep(delay)
+    
+    if (clouds.clouds['india-openstack']['servers']['4b9b4a5d-38aa-46dc-86d2-164771bb61e6']['addresses'][u'vlan102'].__len__() == 2):
+      ip = val['addresses'][u'vlan102'][1][u'addr']
+      print "public ip address : ", ip
+
+      args = {}
+      args['privateKey'] = getConfigSectionMap("ImageConfig")['keyfilepath']  
+      args['user'] = 'ubuntu'
+      args['host'] = ip
+      args['tomcatDownloadLink'] = 'http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.14/bin/apache-tomcat-6.0.14.tar.gz'
+      args['airavataDownloadLink'] = 'http://apache.mirrors.lucidnetworks.net/airavata/0.7/apache-airavata-server-0.7-war.tar.gz'
+
+      print "SOFTWARE_CONFIG : ", ip, java, tomcat, airavata, args['privateKey'], args['tomcatDownloadLink'], args['airavataDownloadLink']
+
+      manager = ImageConfigManager()
+      manager.configure_image(args)
+
+      condition = False
+
+    print "%s: %s" % (threadName, time.ctime(time.time()))
+    
 
 @app.route('/monitoring')
 def monitoring():
