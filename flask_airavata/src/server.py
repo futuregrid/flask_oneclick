@@ -95,10 +95,10 @@ def configure_base_result():
   
   manager = CloudConfigManager()
   # TODO : This will work after, Pushkar updates the cloudmesh.create() 
-  ip = manager.start_image(args2)
+  imageId = manager.start_image(args2)
 
   # Installing software on the image instance
-  #ip = request.args.get('ip_address', '')
+  ip = request.args.get('ip_address', '')
   java = request.args.get('dropdown_java', '')
   tomcat = request.args.get('dropdown_tomcat', '')
   airavata = request.args.get('dropdown_airavata', '')
@@ -109,7 +109,7 @@ def configure_base_result():
   args['host'] = ip
   args['airavataDownloadLink'] = 'http://apache.mirrors.lucidnetworks.net/airavata/0.7/apache-airavata-server-0.7-bin.tar.gz'
 
-  print "SOFTWARE_CONFIG : ", ip, java, tomcat, airavata, args['privateKey']
+  print "SOFTWARE_CONFIG : ", ip, java, tomcat, airavata, args['privateKey'], args['airavataDownloadLink']
   
   manager = ImageConfigManager()
   manager.configure_image(args)
@@ -124,7 +124,36 @@ def configure_custom():
 
 @app.route('/configure_custom_result', methods=['GET', 'POST'])
 def configure_custom_result():
-  # Starting up the image   
+  # Starting up the image
+  infra = request.args.get('dropdown_infrastructure', '')
+  archi = request.args.get('dropdown_architecture', '')
+  memory = request.args.get('dropdown_memory', '')
+  os = request.args.get('dropdown_os', '')
+
+  args2 = {}
+  if(infra == "openstack"):
+    args2['cloud'] = "india-openstack"
+  else:
+    args2['cloud'] = "grizzly-openstack"
+
+  global count
+  count = count + 1
+  args2['username'] = getConfigSectionMap("ImageConfig")['username']  
+  args2['publicKey'] = getConfigSectionMap("ImageConfig")['keyfilename']  
+  args2['userId'] = str(count)
+
+  print "IMAGE_CONFIGURATION : ", infra, archi, memory, os, args2['username'], args2['publicKey'],  count
+  
+  if(os == "ubuntu"):
+    args2['instanceId'] = "6d2bca76-8fff-4d57-9f29-50378539b4fa"
+    args2['imageSize'] = "m1.tiny"
+  else:
+    args2['instanceId'] = "6d2bca76-8fff-4d57-9f29-50378539b4fa"
+    args2['imageSize'] = "m1.tiny"  
+  
+  manager = CloudConfigManager()
+  # TODO : This will work after, Pushkar updates the cloudmesh.create() 
+  imageId = manager.start_image(args2)
 
   # Installing software on the image instance
   ip = request.args.get('ip_address', '')
@@ -134,14 +163,15 @@ def configure_custom_result():
 
   print ip, java, tomcat, airavata
 
-  # TODO : Change accordingly
-  # TODO : Should test this
   args = {}
-  args['privateKey'] = '/home/heshan/.ssh/id_dsa'
+  args['privateKey'] = getConfigSectionMap("ImageConfig")['keyfilepath']  
   args['user'] = 'ubuntu'
-  args['host'] = '149.165.158.11'
-  args['airavataDownloadLink'] = 'http://apache.mirrors.lucidnetworks.net/airavata/0.7/apache-airavata-server-0.7-bin.tar.gz'
+  args['host'] = ip
+  args['tomcatDownloadLink'] = 'http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.14/bin/apache-tomcat-6.0.14.tar.gz'
+  args['airavataDownloadLink'] = 'http://apache.mirrors.lucidnetworks.net/airavata/0.7/apache-airavata-server-0.7-war.tar.gz'
 
+  print "SOFTWARE_CONFIG : ", ip, java, tomcat, airavata, args['privateKey'], args['tomcatDownloadLink'], args['airavataDownloadLink']
+  
   manager = ImageConfigManager()
   manager.configure_image(args)
       
