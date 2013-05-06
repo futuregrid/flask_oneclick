@@ -37,11 +37,11 @@ class CloudConfigManager():
         
         clouds = cloudmesh()
         clouds.refresh()
-        #d = clouds.configuration
-        #id = clouds.create(cloud, username, userId, instanceId, imageSize, publicKey)
-        #print "image id : ", id
+        d = clouds.configuration
+        id = clouds.create(cloud, username, userId, instanceId, imageSize, publicKey)
+        print "image id : ", id
 
-        print clouds.clouds['india-openstack']['servers']['f1c8e310-282c-4572-a605-129e32bc76ae']
+        #print clouds.clouds['india-openstack']['servers']['f1c8e310-282c-4572-a605-129e32bc76ae']
 
 
 if __name__ == '__main__':
