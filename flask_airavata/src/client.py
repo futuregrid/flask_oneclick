@@ -128,6 +128,39 @@ class ImageConfigManager():
         process.close()
 
 
+    def start_tomcat(self, args):   
+
+	privateKey = args['privateKey']
+        user = args['user']
+        host = args['host']
+        machine = user + '@' + host
+        airavataDownloadLink = args['airavataDownloadLink']
+        tomcatDownloadLink = args['tomcatDownloadLink']
+
+        # Starting Airavata Server
+        cmd = 'ssh -i' + ' ' + privateKey + ' ' + machine + ' "export JAVA_HOME=/usr/bin/java | exec nohup sh apache-tomcat-*/bin/catalina.sh run &"'
+        process = os.popen(cmd)
+        preprocessed = process.read()
+        process.close()
+
+
+    def stop_tomcat(self, args):   
+
+	privateKey = args['privateKey']
+        user = args['user']
+        host = args['host']
+        machine = user + '@' + host
+        airavataDownloadLink = args['airavataDownloadLink']
+        tomcatDownloadLink = args['tomcatDownloadLink']
+
+        # Stopping Airavata Server
+	# TODO : Test this and fix it.
+        cmd = 'ssh -i' + ' ' + privateKey + ' ' + machine + ' "exec kill $(ps aux | grep \'tomcat\' | awk \'{print $2}\')"'
+        process = os.popen(cmd)
+        preprocessed = process.read()
+        process.close()
+
+
 if __name__ == "__main__":
     args = {}
     args['privateKey'] = '/home/heshan/.ssh/id_dsa'
