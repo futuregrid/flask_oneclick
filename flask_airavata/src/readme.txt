@@ -1,13 +1,70 @@
 Installation instructions
 =========================
 
-1) Checkout and install ClouMesh in a Virtual environment.
-   Instruction can be found on http://cloudmesh.blogspot.com/2013/02/setting-up-cloud-mesh-environment-on.html
+This is done in 3 steps. 
+ i) Setting-up Flask
+ ii) Setting-up Cloud Mesh
+ iii) Setting-up Airavata Deployment Studio
 
-   GVL: PLEASE REMOVE DEPENDENCY TO GO TO SOME BLOG, INSTAED PUT EXPLENATION IN SELF CONTAINED MANNER HERE
 
-2) Start the server using the following command.
-   eg: make server
+Setting-up Flask
+----------------
+1). Checkout source
+    git clone https://github.com/futuregrid/flask.git
+
+2). Change directory to cm
+    cd flask/cm
+
+3). Setup virtualenv and activate it.
+    heshan@heshan-ThinkPad-T520:~/Dev/setup/futuregrid/flask/cm$ virtualenv ~/ENV 
+    heshan@heshan-ThinkPad-T520:~/Dev/setup/futuregrid/flask/cm$ . ~/ENV/bin/activate
+
+Afterwards you might see your prompt change to ENV.
+
+4). Install flask, Flask-FlatPages and sh (if not already installed).
+    pip install flask 
+    pip install Flask-FlatPages 
+    pip install sh
+
+5). The scripts Assumes cm.git and flask are in the same directory hierarchy
+    (ENV)heshan@heshan-ThinkPad-T520:~/Dev/setup/futuregrid/flask/cm$ pwd
+    /home/heshan/Dev/setup/futuregrid/flask/cm
+
+6). Source the novarc file
+    source ~/.futuregrid/openstack/novarc 
+
+
+Setting-up Cloud Mesh
+---------------------
+1). Checkout Cloud Mesh.
+    git clone git://github.com/futuregrid/cm.git
+
+2). Activate virtualenv.
+    . ~/ENV/bin/activate
+
+3). Run make.
+    (ENV)heshan@heshan-ThinkPad-T520:~/Dev/setup/futuregrid/cm.git/trunk$ make
+
+4). Set the key for Open Stack. (You could get this key from your futuregrid account.)
+    scp heshan@india.futuregrid.org:.futuregrid/openstack/novarc .  
+    cat novarc  
+    mkdir -p ~/.futuregrid/openstack/  
+    cp novarc ~/.futuregrid/openstack/  
+    source ~/.futuregrid/openstack/novarc 
+
+5). Type in a nova command to check whether the key was set properly.
+    $ nova list
+
+
+Setting-up Airavata Deployment Studio
+-------------------------------------
+
+1) Checkout Airavata Deployment Studio.
+   git clone git://github.com/futuregrid/flask_oneclick.git
+
+2) Start the server.
+   cd flask_oneclick/flask_airavata/src
+   make server
 
 3) Then connect to the Airavata Deployment Studio app using the following URL.
    eg: http://127.0.0.1:5000/
@@ -20,13 +77,11 @@ of them as they are the only ones which are used within the current program. Fol
 --------------------------------------------------
 [ImageConfig]
 UserName: heshan
-HostName: 156.56.179.116
 KeyFileName: heshan-key
 KeyFilePath: /home/heshan/.ssh/id_dsa
 --------------------------------------------------
 
 UserName - Used when creating the image. 
-HostName - Public IP address of the image.
 KeyFileName - Name used when exporting the key to your environment
 KeyFilePath - Public key path
 

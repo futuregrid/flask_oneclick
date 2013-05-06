@@ -4,6 +4,8 @@
 
 
 import ConfigParser
+import thread
+import time
 from flask import Flask, render_template, request
 from image import *
 from client import *
@@ -179,8 +181,6 @@ def configure_custom_result():
   java = request.args.get('dropdown_java', '')
   tomcat = request.args.get('dropdown_tomcat', '')
   airavata = request.args.get('dropdown_airavata', '')
-
-  print ip, java, tomcat, airavata
 
   try:
     thread.start_new_thread(custom_thread, ("CustomThread-" + str(count), 2, ))
