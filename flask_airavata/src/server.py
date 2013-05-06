@@ -3,6 +3,7 @@
 ##
 
 
+import ConfigParser
 from flask import Flask, render_template, request
 from image import *
 from client import *
@@ -10,6 +11,22 @@ app = Flask(__name__)
 
 
 dict = {}
+Config = ConfigParser.ConfigParser()
+Config.read("config.ini")
+count = 0
+
+def getConfigSectionMap(section):
+  dict1 = {}
+  options = Config.options(section)
+  for option in options:
+    try:
+      dict1[option] = Config.get(section, option)
+      if dict1[option] == -1:
+        DebugPrint("skip: %s" % option)
+    except:
+      print("exception on %s!" % option)
+      dict1[option] = None
+  return dict1
 
 
 @app.route('/')
@@ -49,6 +66,9 @@ def configure_base():
 
 @app.route('/configure_base_result', methods=['GET', 'POST'])
 def configure_base_result():
+  # Starting up the image   
+
+  # Installing software on the image instance
   ip = request.args.get('ip_address', '')
   java = request.args.get('dropdown_java', '')
   tomcat = request.args.get('dropdown_tomcat', '')
@@ -77,6 +97,9 @@ def configure_custom():
 
 @app.route('/configure_custom_result', methods=['GET', 'POST'])
 def configure_custom_result():
+  # Starting up the image   
+
+  # Installing software on the image instance
   ip = request.args.get('ip_address', '')
   java = request.args.get('dropdown_java', '')
   tomcat = request.args.get('dropdown_tomcat', '')
@@ -115,28 +138,29 @@ def imageResult():
   memory = request.args.get('dropdown_memory', '')
   os = request.args.get('dropdown_os', '')
 
-  print infra, archi, memory, os
-
-  args = {}
+  args2 = {}
   if(infra == "openstack"):
-    args['cloud'] = "india-openstack"
+    args2['cloud'] = "india-openstack"
   else:
-    args['cloud'] = "grizzly-openstack"
+    args2['cloud'] = "grizzly-openstack"
 
-  ## TODO : Read in from the config file  
-  args['username'] = "heshan"
-  args['publicKey'] = "heshan-key" 
-  args['userId'] = "1"
+  global count
+  count = count + 1
+  args2['username'] = getConfigSectionMap("ImageConfig")['username']  
+  args2['publicKey'] = getConfigSectionMap("ImageConfig")['keyfilename']  
+  args2['userId'] = str(count)
 
+  print infra, archi, memory, os, args2['username'], args2['publicKey'],  count
+  
   if(os == "ubuntu"):
-    args['instanceId'] = "6d2bca76-8fff-4d57-9f29-50378539b4fa"
-    args['imageSize'] = "m1.tiny"
+    args2['instanceId'] = "6d2bca76-8fff-4d57-9f29-50378539b4fa"
+    args2['imageSize'] = "m1.tiny"
   else:
-    args['instanceId'] = "6d2bca76-8fff-4d57-9f29-50378539b4fa"
-    args['imageSize'] = "m1.tiny"  
+    args2['instanceId'] = "6d2bca76-8fff-4d57-9f29-50378539b4fa"
+    args2['imageSize'] = "m1.tiny"  
   
   manager = CloudConfigManager()
-  manager.start_image(args)
+  manager.start_image(args2)
 
   return render_template('image-result.html')
 
