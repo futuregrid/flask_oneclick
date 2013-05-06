@@ -1,3 +1,8 @@
+About
+=====
+
+This project is developed by Heshan Suriyaarachchi as part of an independent study for his MS course work and mentored by Gregor Von Laszewski. The project was developed from http://svn.code.sourceforge.net/p/fgairavata/code-0/trunk/ and later moved to https://github.com/futuregrid/flask_oneclick.git.
+
 Installation instructions
 =========================
 
