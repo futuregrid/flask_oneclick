@@ -27,10 +27,10 @@ class myThread (threading.Thread):
     self.delay = delay
     
   def run(self):
-    print "Starting " + self.name
+    print "Starting " + self.threadName
     #print_time(self.name, self.counter, 5)
-    base_thread(threadName, imageId)
-    print "Exiting " + self.name
+    base_thread(self.threadName, self.delay, self.imageId)
+    print "Exiting " + self.threadName
 
 
 def getConfigSectionMap(section):
@@ -133,8 +133,10 @@ def configure_base_result():
 def base_thread(threadName, delay, imageId):
   condition = True
   clouds = cloudmesh()
+  
   while condition:
     clouds.refresh()
+    print "Sleeping " , threadName, " thread for ", delay, "seconds"
     time.sleep(delay)
     if (clouds.clouds['india-openstack']['servers'][imageId]['addresses'][u'vlan102'].__len__() == 2):
       ip = val['addresses'][u'vlan102'][1][u'addr']
@@ -215,6 +217,7 @@ def custom_thread(threadName, delay, imageId):
   clouds = cloudmesh()
   while condition:
     clouds.refresh()
+    print "Sleeping " , threadName, " thread for ", delay, "seconds"
     time.sleep(delay)
     
     if (clouds.clouds['india-openstack']['servers'][imageId]['addresses'][u'vlan102'].__len__() == 2):
