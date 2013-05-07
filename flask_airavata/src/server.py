@@ -4,7 +4,8 @@
 
 
 import ConfigParser
-import thread
+import threading
+#import thread
 import time
 from flask import Flask, render_template, request
 from image import *
@@ -16,6 +17,21 @@ dict = {}
 Config = ConfigParser.ConfigParser()
 Config.read("config.ini")
 count = 0
+
+class myThread (threading.Thread):
+
+  def __init__(self, imageId, name, delay):
+    threading.Thread.__init__(self)
+    self.imageId = imageId
+    self.threadName = threadName
+    self.delay = delay
+    
+  def run(self):
+    print "Starting " + self.name
+    #print_time(self.name, self.counter, 5)
+    base_thread(threadName, imageId)
+    print "Exiting " + self.name
+
 
 def getConfigSectionMap(section):
   dict1 = {}
@@ -106,7 +122,9 @@ def configure_base_result():
   airavata = request.args.get('dropdown_airavata', '')
 
   try:
-    thread.start_new_thread(base_thread, ("BaseThread-" + str(count), 2, imageId, ))
+    #thread.start_new_thread(base_thread, ("BaseThread-" + str(count), 2, imageId, ))
+    thread1 = myThread("BaseThread-" + str(count), 300, imageId)
+    thread1.start()
   except:
     print "Error: unable to start Base Thread"
        
@@ -183,10 +201,11 @@ def configure_custom_result():
   airavata = request.args.get('dropdown_airavata', '')
 
   try:
-    thread.start_new_thread(custom_thread, ("CustomThread-" + str(count), 2, imageId, ))
+    #thread.start_new_thread(custom_thread, ("CustomThread-" + str(count), 2, imageId, ))
+    thread1 = myThread("CustomThread-" + str(count), 300, imageId)
+    thread1.start()
   except:
     print "Error: unable to start Base Thread"
-
       
   return render_template('configure_custom_result.html')
 
