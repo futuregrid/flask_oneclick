@@ -96,7 +96,7 @@ def configure_base_result():
     args2['imageSize'] = "m1.tiny"  
   
   manager = CloudConfigManager()
-  # TODO : This will work after, Pushkar updates the cloudmesh.create() 
+  # TODO : This the following logic once the FutureGrid is up from maintenance 
   imageId = manager.start_image(args2)
 
   # Installing software on the image instance
@@ -106,21 +106,21 @@ def configure_base_result():
   airavata = request.args.get('dropdown_airavata', '')
 
   try:
-    thread.start_new_thread(base_thread, ("BaseThread-" + str(count), 2, ))
+    thread.start_new_thread(base_thread, ("BaseThread-" + str(count), 2, imageId, ))
   except:
     print "Error: unable to start Base Thread"
        
   return render_template('configure_base_result.html')
 
-def base_thread(threadName, delay):
+def base_thread(threadName, delay, imageId):
   condition = True
   clouds = cloudmesh()
   while condition:
     clouds.refresh()
     time.sleep(delay)
-    if (clouds.clouds['india-openstack']['servers']['4b9b4a5d-38aa-46dc-86d2-164771bb61e6']['addresses'][u'vlan102'].__len__() == 2):
+    if (clouds.clouds['india-openstack']['servers'][imageId]['addresses'][u'vlan102'].__len__() == 2):
       ip = val['addresses'][u'vlan102'][1][u'addr']
-      print "public ip address : ", ip
+      print "public IP address : ", ip
       
       args = {}
       args['privateKey'] = getConfigSectionMap("ImageConfig")['keyfilepath']  
@@ -173,7 +173,7 @@ def configure_custom_result():
     args2['imageSize'] = "m1.tiny"  
   
   manager = CloudConfigManager()
-  # TODO : This will work after, Pushkar updates the cloudmesh.create() 
+  # TODO : This the following logic once the FutureGrid is up from maintenance
   imageId = manager.start_image(args2)
 
   # Installing software on the image instance
@@ -183,7 +183,7 @@ def configure_custom_result():
   airavata = request.args.get('dropdown_airavata', '')
 
   try:
-    thread.start_new_thread(custom_thread, ("CustomThread-" + str(count), 2, ))
+    thread.start_new_thread(custom_thread, ("CustomThread-" + str(count), 2, imageId, ))
   except:
     print "Error: unable to start Base Thread"
 
@@ -191,14 +191,14 @@ def configure_custom_result():
   return render_template('configure_custom_result.html')
 
 
-def custom_thread(threadName, delay):
+def custom_thread(threadName, delay, imageId):
   condition = True
   clouds = cloudmesh()
   while condition:
     clouds.refresh()
     time.sleep(delay)
     
-    if (clouds.clouds['india-openstack']['servers']['4b9b4a5d-38aa-46dc-86d2-164771bb61e6']['addresses'][u'vlan102'].__len__() == 2):
+    if (clouds.clouds['india-openstack']['servers'][imageId]['addresses'][u'vlan102'].__len__() == 2):
       ip = val['addresses'][u'vlan102'][1][u'addr']
       print "public ip address : ", ip
 
